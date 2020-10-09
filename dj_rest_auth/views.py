@@ -72,12 +72,9 @@ class LoginView(GenericAPIView):
         serializer_class = self.get_response_serializer()
 
         if getattr(settings, 'REST_USE_JWT', False):
-            data = {
-                'user': self.user,
-                'access_token': self.access_token,
-                'refresh_token': self.refresh_token
-            }
-            serializer = serializer_class(instance=data,
+            self.user.access_token = self.access_token
+            self.user.refresh_token = self.refresh_token
+            serializer = serializer_class(instance=self.user,
                                           context=self.get_serializer_context())
         else:
             serializer = serializer_class(instance=self.token,

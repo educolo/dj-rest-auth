@@ -48,12 +48,9 @@ class RegisterView(CreateAPIView):
             return {"detail": _("Verification e-mail sent.")}
 
         if getattr(settings, 'REST_USE_JWT', False):
-            data = {
-                'user': user,
-                'access_token': self.access_token,
-                'refresh_token': self.refresh_token
-            }
-            return JWTSerializer(data, context=self.get_serializer_context()).data
+            user.access_token = self.access_token
+            user.refresh_token = self.refresh_token
+            return JWTSerializer(user, context=self.get_serializer_context()).data
         else:
             return TokenSerializer(user.auth_token, context=self.get_serializer_context()).data
 
