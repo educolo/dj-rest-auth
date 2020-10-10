@@ -199,6 +199,7 @@ class UserDetailsView(RetrieveUpdateAPIView):
     """
     serializer_class = UserDetailsSerializer
     permission_classes = (IsAuthenticated,)
+    lookup_field = None
 
     def get_object(self):
         return self.request.user
